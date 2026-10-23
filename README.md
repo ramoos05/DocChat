@@ -7,7 +7,9 @@ Construída com **Streamlit, LangChain, ChromaDB e OpenAI API**, oferece busca s
 ## 🎥 Demonstração
 
 
-https://github.com/user-attachments/assets/75dbde50-3f1b-4538-9568-71c42aecf968
+
+https://github.com/user-attachments/assets/69229350-1286-4d99-bae3-6d0eb70af624
+
 
 ### Interface da aplicação
 
