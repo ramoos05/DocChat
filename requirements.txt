@@ -1,0 +1,7 @@
+streamlit>=1.66,<2
+langchain-classic>=1.0.8,<2
+langchain-chroma>=1.1,<2
+langchain-openai>=1.7.2,<2
+langchain-text-splitters>=1.1.3,<2
+pypdf>=6.21.1,<7
+python-decouple==3.8
