@@ -1,91 +1,102 @@
-# DocChat
+# 📄 DocChat 
 
-Aplicação em Python para conversar em português com documentos PDF. As respostas aparecem em tempo real, acompanhadas dos arquivos, páginas e trechos recuperados na busca.
+Aplicação desenvolvida em **Python** que utiliza **Retrieval-Augmented Generation (RAG)** para permitir conversas com documentos PDF por meio de Inteligência Artificial.
 
-Construída com Streamlit, LangChain, ChromaDB e a API da OpenAI.
+Construída com **Streamlit, LangChain, ChromaDB e OpenAI API**, oferece busca semântica, histórico de conversas, respostas em streaming e referências às fontes consultadas.
 
-## Recursos
+## 🎥 Demonstração
 
-- Upload de vários PDFs com texto selecionável.
-- Indexação sem repetir arquivos com o mesmo nome na sessão.
-- Perguntas de continuação com histórico da conversa.
-- Respostas com streaming e painel de fontes recuperadas.
-- Remoção de documentos e limpeza da conversa.
-- Escolha do modelo e da quantidade de trechos consultados.
-- Bases de documentos separadas por sessão do navegador.
 
-## Requisitos
+https://github.com/user-attachments/assets/75dbde50-3f1b-4538-9568-71c42aecf968
 
-Python 3.13 e uma chave da API da OpenAI com acesso ao modelo escolhido e saldo disponível.
+### Interface da aplicação
 
-## Instalação
+<img width="1917" height="870" alt="Captura de tela 2026-10-22 215509" src="https://github.com/user-attachments/assets/97a25598-74fd-48b8-9efb-5b96eaedb81e" />
 
-Baixe ou clone este repositório e abra um terminal na pasta do projeto.
+<img width="1917" height="871" alt="Captura de tela 2026-10-22 215450" src="https://github.com/user-attachments/assets/ff24c7f3-0eb2-47c2-826a-a108c8ba4e50" />
 
-No Windows (PowerShell):
+## 🛠️ Tecnologias
+
+**Python 3.13** • **Streamlit** • **LangChain** • **ChromaDB** • **OpenAI API** • **Pytest** • **GitHub Actions**
+
+## ✨ Funcionalidades
+
+- Upload e processamento de múltiplos PDFs.
+- Indexação e busca semântica com embeddings.
+- Respostas em streaming com histórico de conversa.
+- Exibição dos documentos, páginas e trechos recuperados.
+- Seleção do modelo de IA e quantidade de trechos consultados.
+- Gerenciamento de documentos e isolamento da base vetorial por sessão.
+- Testes automatizados e integração contínua.
+
+## 🧠 Como funciona?
+
+O DocChat utiliza uma arquitetura RAG para recuperar informações relevantes antes de gerar respostas:
+
+```text
+Upload de PDFs
+      ↓
+Extração e divisão do texto
+      ↓
+OpenAI Embeddings
+      ↓
+ChromaDB (Banco Vetorial)
+      ↓
+Pergunta → Busca Semântica
+      ↓
+Contexto + Histórico
+      ↓
+OpenAI LLM
+      ↓
+Resposta + Fontes
+```
+
+## 🚀 Como executar
+
+**1. Clone o repositório**
+
+```bash
+git clone https://github.com/ramoos05/DocChat.git
+cd DocChat
+```
+
+**2. Crie o ambiente virtual e instale as dependências (Windows)**
 
 ```powershell
 python -m venv venv
 .\venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+**3. Execute a aplicação**
+
+```powershell
 .\venv\Scripts\python.exe -m streamlit run app.py
 ```
 
-No Linux ou macOS:
+Informe sua chave da OpenAI na barra lateral ou configure `OPENAI_API_KEY` em um arquivo `.env`, utilizando `.env.example` como referência.
 
-```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python -m streamlit run app.py
-```
+## 🧪 Testes
 
-Informe a chave na barra lateral. Para uso local, também é possível copiar `.env.example` para `.env` e preencher `OPENAI_API_KEY`.
-
-## Uso e privacidade
-
-Envie os PDFs pela barra lateral e faça uma pergunta. Para substituir um arquivo por outra versão com o mesmo nome, remova o documento anterior antes de enviar a nova versão.
-
-O texto dos PDFs é enviado à OpenAI para criar embeddings. A pergunta, o histórico e os trechos recuperados são enviados para gerar a resposta. As chamadas podem gerar cobranças na conta associada à chave utilizada.
-
-A chave digitada fica na memória da sessão. Os textos e embeddings ficam no servidor, em `db/sessions/`, em uma base separada para cada sessão. Uma nova sessão não recupera os documentos da anterior. Encerrar o navegador não apaga os arquivos do disco; remova os documentos pelo aplicativo antes de sair se precisar excluir o conteúdo indexado. A base antiga em `db/` é preservada e não é carregada automaticamente pela interface.
-
-O `.gitignore` exclui variáveis de ambiente, segredos do Streamlit, bases locais, PDFs, uploads e ambientes virtuais. O arquivo `.env.example` contém apenas o nome da variável, sem credenciais.
-
-## Limitações
-
-PDFs escaneados precisam de OCR antes do upload. As fontes exibidas mostram os trechos recuperados, não uma garantia de que cada afirmação foi verificada. A busca consulta um número limitado de trechos; resumos e listas podem omitir informações de documentos longos. Revise as respostas no documento original.
-
-A separação por sessão não substitui autenticação e controle de acesso para hospedar documentos confidenciais. Uma chave configurada no servidor estará disponível para as chamadas de todos os usuários com acesso ao aplicativo.
-
-## Testes
+O projeto utiliza **Pytest** com embeddings locais e um modelo simulado, permitindo executar os testes sem chamadas pagas à OpenAI.
 
 ```powershell
 .\venv\Scripts\python.exe -m pip install -r requirements_dev.txt
 .\venv\Scripts\python.exe -m pytest -q
 ```
 
-Os testes usam PDFs em memória, embeddings locais e um modelo simulado, sem chamadas pagas à OpenAI. O GitHub Actions executa a suíte em pushes e pull requests.
+O **GitHub Actions** executa os testes em pushes e pull requests.
 
-## Estrutura
+## ⚠️ Observações
 
-| Arquivo | Responsabilidade |
-| --- | --- |
-| `app.py` | Interface, configuração e estado de sessão |
-| `rag.py` | Leitura de PDFs, indexação, recuperação e respostas |
-| `tests/` | Testes automatizados |
-| `.streamlit/config.toml` | Tema e configuração da interface |
-| `.env.example` | Exemplo de configuração local |
+- PDFs digitalizados precisam passar por OCR.
+- O conteúdo dos documentos é enviado à OpenAI para processamento.
+- Os textos e embeddings ficam armazenados no servidor; fechar o navegador não os exclui.
+- O isolamento por sessão não substitui autenticação para documentos confidenciais.
+- Respostas geradas por IA devem ser verificadas nas fontes originais.
+- A utilização da API da OpenAI pode gerar custos.
 
-## Publicação no GitHub
+## 👨‍💻 Desenvolvedor
 
-Crie um repositório vazio no GitHub. Nesta pasta, execute:
+**Patrick Ramos** — Estudante de Análise e Desenvolvimento de Sistemas, com foco em Backend Python e Inteligência Artificial.
 
-```powershell
-git init
-git add .
-git status --short
-git diff --cached --stat
-git commit -m "Prepare DocChat for publication"
-git branch -M main
-```
-
-Depois, use os comandos de `git remote add origin` e `git push` fornecidos pelo GitHub para o seu repositório. Confira os arquivos preparados antes do commit: `.env`, `db/`, PDFs e `venv/` não devem aparecer. O `.gitignore` não remove arquivos que já tenham sido versionados em outro repositório.
+[GitHub](https://github.com/ramoos05) • [LinkedIn](https://www.linkedin.com/in/ramos-dev/)
